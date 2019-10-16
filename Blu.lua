@@ -18,9 +18,7 @@ function job_setup()
     state.Buff.Convergence = buffactive.Convergence or false
     state.Buff.Diffusion = buffactive.Diffusion or false
     state.Buff.Efflux = buffactive.Efflux or false
-    
     state.Buff['Unbridled Learning'] = buffactive['Unbridled Learning'] or false
-
 
     blue_magic_maps = {}
     
@@ -179,7 +177,7 @@ end
 
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
-    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Refresh', 'Learning', 'Leveling')
+    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Reives', 'Learning', 'Leveling')
     state.WeaponskillMode:options('Normal', 'Acc')
     state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'Solo', 'PDT', 'Learning')
@@ -192,7 +190,7 @@ function user_setup()
     send_command('bind @` input /ja "Burst Affinity" <me>')
 
     update_combat_form()
-    select_default_macro_book()
+    --select_default_macro_book()
 end
 
 
@@ -249,7 +247,7 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Ayanmo Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
     
     sets.precast.WS.acc = set_combine(sets.precast.WS, {})
@@ -265,7 +263,7 @@ function init_gear_sets()
     head="Jhakri Coronal +1",
     body="Jhakri Robe",
     hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops",
+    legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
@@ -273,20 +271,57 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 	
-	sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
-	neck="Thunder Gorget",
-	waist="Thunder Belt",
-	})
+	sets.precast.WS['Savage Blade'] = {
+    ammo="Ginsen",
+    head="Jhakri Coronal +1",
+    body="Jhakri Robe",
+    hands="Jhakri Cuffs +1",
+    legs="Jhakri Slops +1",
+    feet="Jhakri Pigaches +1",
+    neck="Thunder Gorget",
+	left_ear="Steelflash Earring",
+    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
+    waist="Thunder Belt",
+    left_ring="Rajas Ring",
+    right_ring="Jhakri Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+	}
 	
-	sets.precast.WS['Chant du Cygne'] = set_combine(sets.precast.WS, {
-	neck="Light Gorget",
-	waist="Light Belt",
-	})
-    
-    
+	sets.precast.WS['Chant du Cygne'] = {
+    ammo="Jukukik Feather",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +1",
+    hands="Aya. Manopolas +1",
+    legs="Hashishin Tayt",
+    feet="Aya. Gambieras +1",
+    neck="Light Gorget",
+    waist="Light Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Rajas Ring",
+    right_ring="Enlivened Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+	}
+
+    sets.precast.WS['Swift Blade'] = {
+	ammo="Ginsen",
+    head="Jhakri Coronal +1",
+    body="Jhakri Robe",
+    hands="Jhakri Cuffs +1",
+    legs="Jhakri Slops +1",
+    feet="Jhakri Pigaches +1",
+	left_ear="Steelflash Earring",
+    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
+	neck="Soil Gorget",
+	waist="Soil Belt",
+	left_ring="Rajas Ring",
+    right_ring="Jhakri Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+	}
+
     -- Midcast Sets
     sets.midcast.FastRecast = {}
         
@@ -299,7 +334,7 @@ function init_gear_sets()
     head="Jhakri Coronal +1",
     body="Jhakri Robe",
     hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops",
+    legs="Jhakri Slops +1",
     feet={ name="Luhlaza Charuqs", augments={'Enhances "Diffusion" effect',}},
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
@@ -307,7 +342,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Jhakri Ring",
     right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     sets.midcast['Blue Magic'].PhysicalAcc = {
@@ -323,7 +358,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},	
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},	
 	}
 
     sets.midcast['Blue Magic'].PhysicalStr = set_combine(sets.midcast['Blue Magic'].Physical,
@@ -357,7 +392,7 @@ function init_gear_sets()
     head="Jhakri Coronal +1",
     body="Jhakri Robe",
     hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops",
+    legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
@@ -365,7 +400,7 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     sets.midcast['Blue Magic'].Magical.Resistant = set_combine(sets.midcast['Blue Magic'].Magical,
@@ -386,7 +421,7 @@ function init_gear_sets()
     head="Jhakri Coronal +1",
     body="Jhakri Robe",
     hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops",
+    legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
@@ -394,7 +429,7 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     -- Breath Spells --
@@ -444,6 +479,12 @@ function init_gear_sets()
 	sets.Leveling = {
 	back="Aptitude Mantle",
 	}
+	
+	sets.Subtle = {
+    neck="Bathy Choker",
+    right_ear="Ouesk Pearl",
+    right_ring="Rajas Ring",
+	}
 
     sets.latent_refresh = {}
 
@@ -464,7 +505,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     sets.idle.PDT = {}
@@ -474,7 +515,6 @@ function init_gear_sets()
 	}
 
     sets.idle.Solo = {
-	range="Rogetsurin",
 	head="Aya. Zucchetto +1",
     body="Ayanmo Corazza +1",
     hands="Assim. Bazu. +2",
@@ -505,7 +545,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},}
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},}
 
     sets.defense.MDT = {}
 
@@ -532,15 +572,13 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     sets.engaged.Acc = {}
 
-	sets.engaged.Subtle = set_combine(sets.engaged, {})
+	sets.engaged.Subtle = set_combine(sets.engaged, sets.Subtle)
 
-    sets.engaged.Refresh = {}
-	
     sets.engaged.DW = {
 	ammo="Ginsen",
     head="Aya. Zucchetto +1",
@@ -554,14 +592,12 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +2%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
 	}
 
     sets.engaged.DW.Acc = {}
 	
-	sets.engaged.DW.Subtle = {}
-
-    sets.engaged.DW.Refresh = {}
+	sets.engaged.DW.Subtle = set_combine(sets.engaged.DW, sets.Subtle)
 
     sets.engaged.Learning = set_combine(sets.engaged, sets.Learning)
     
@@ -570,7 +606,6 @@ function init_gear_sets()
 	sets.engaged.DW.Learning = set_combine(sets.engaged.DW, sets.Learning)
 	
 	sets.engaged.DW.Leveling = set_combine(sets.engaged.DW, sets.Leveling)
-
 
     sets.self_healing = {} 
 end
@@ -581,12 +616,12 @@ end
 
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
-function job_precast(spell, action, spellMap, eventArgs)
+--[[function job_precast(spell, action, spellMap, eventArgs)
     if unbridled_spells:contains(spell.english) and not state.Buff['Unbridled Learning'] then
         eventArgs.cancel = true
         windower.send_command('@input /ja "Unbridled Learning" <me>; wait 1.5; input /ma "'..spell.name..'" '..spell.target.name)
     end
-end
+end]]
 
 -- Run after the default midcast() is done.
 -- eventArgs is the same one used in job_midcast, in case information needs to be persisted.
@@ -670,13 +705,13 @@ end
 
 
 	-- Select default macro book on initial load or subjob change.
-function select_default_macro_book()
+--[[function select_default_macro_book()
     -- Default macro set/book
     if player.sub_job == 'DNC' then
         set_macro_page(1, 16)
     else
         set_macro_page(1, 16)
     end
-end 
+end ]]
 
 
