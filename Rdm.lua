@@ -64,61 +64,22 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
-	--[[
-	gear.NukingHead = {name="Merlinic Hood", augments={'Mag. Acc.+24 "Mag.Atk.Bns."+24','Magic burst dmg.+3%','INT+8','Mag. Acc.+15','"Mag.Atk.Bns."+10',}}
-	gear.MBLegs = {name="Merlinic Shalwar", augments={'Mag. Acc.+25 "Mag.Atk.Bns."+25','Magic burst mdg.+11%','MND+6','Mag. Acc.+13','"Mag.Atk.Bns."+2',}}
-	gear.RegenBody = {name="Telchine Chasuble", augments={'Pet: "Mag.Atk.Bns."+18','"Conserve MP"+3','"Regen" potency+3',}}
-	gear.RegenLegs = {name="Telchine Braconi", augments={'Rng.Atk.+7','"Fast Cast"+4','"Regen" potency+3',}}
-	gear.RegenFeet = {name="Telchine Pigaches", augments={'Evasion+14','"Conserve MP"+4','"Regen" potency+3',}}
-	gear.PetRegenBody = {name="Telchine Chasuble", augments={'Pet: DEF+7','Pet: "Regen"+3','Enh. Mag. eff. dur. +10',}}
-	gear.CuringHat = {name="Gende. Caubeen +1", augments={'Phys. dmg. taken -3%','"Cure" potency +6%',}}
-	gear.CuringHands = {name="Telchine Gloves", augments={'Evasion+20','"Cure" potency +7%','Enh. Mag. eff. dur. +10',}}
-	gear.CMPHead = {name="Telchine Cap", augments={'Accuracy+12 Attack+12','Potency of "Cure" effect received+6%','Enh. Mag. eff. dur. +10',}}
-	gear.CMPHands = {name="Telchine Gloves", augments={'Evasion+17','Potency of "Cure" effect received+6%',}}
-	gear.CMPLegs = {name="Telchine Braconi", augments={'Evasion+18','Potency of "Cure" effect received+7%','Enh. Mag. eff. dur. +10',}}
-	gear.CMPFeet = {name="Telchine Pigaches", augments={'DEF+7','Potency of "Cure" effect received+6%','Enh. Mag. eff. dur. +10',}}
-	gear.DrainBody = {name="Merlinic Jubbah", augments={'Mag. Acc.+14 "Mag.Atk.Bns."+14','"Drain" and "Aspir" potency +10','Mag. Acc.+14','"Mag.Atk.Bns."+5',}}
-	gear.DrainHands = {name="Merlinic Dastanas", augments={'Mag. Acc.+25','"Drain" and "Aspir" potency +10','INT+6',}}
-	gear.DrainLegs = {name="Merlinic Shalwar", augments={'Mag. Acc.+30','"Drain" and "Aspir" potency +9','CHR+14',}}
-	gear.DrainFeet = {name="Merlinic Crackows", augments={'Mag. Acc.+28','"Drain" and "Aspir" potency +10','MND+1',}}
-	gear.ENFHands = {name="Chironic Gloves", augments={'Mag. Acc.+25 "Mag.Atk.Bns."+25','"Cure" potency +1%','CHR+6','Mag. Acc.+13','"Mag.Atk.Bns."+5',}}
-	gear.ENFLegs = {name="Chironic Hose", augments={'Mag. Acc.+22 "Mag.Atk.Bns."+22','"Fast Cast"+2','Mag. Acc.+14','"Mag.Atk.Bns."+3',}}
-	gear.FCHead = {name="Merlinic Hood", augments={'Mag. Acc.+2','"Fast Cast"+6','"Mag.Atk.Bns."+30',}}
-	gear.FCBody = {name="Merlinic Crackows", augments={'Mag. Acc.+16 "Mag.Atk.Bns."+16','"Fast Cast"+5','CHR+2','Mag. Acc.+11','"Mag.Atk.Bns."+10',}}
-	gear.FCFeet = {name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+18','"Fast Cast"+7','DEX+2','Mag. Acc.+1',}}
-	gear.DTHead = {name="Merlinic Hood", augments={'Pet: Attack+17 Pet: Rng.Atk.+17','CHR+5','Damage taken-5%','Accuracy+6 Attack+6',}}
-	gear.DTBody = {name="Merlinic Jubbah", augments={'"Mag.Atk.Bns."+16','Damage taken-3%','CHR+2'}}
-	gear.PhalanxHead = { name="Merlinic Hood", augments={'"Dbl.Atk."+5','INT+6','Phalanx +3','Mag. Acc.+4 "Mag.Atk.Bns."+4',}}
-	gear.PhalanxFeet = {name="Merlinic Crackows", augments={'Pet: STR+10','Pet: "Dbl.Atk."+3 Pet: Crit.hit rate +3','Phalanx +4','Mag. Acc.+1 "Mag.Atk.Bns."+1',}}
-	gear.PhalanxLegs = {name="Merlinic Shalwar", augments={'System: 1 ID: 1793 Val: 8','STR+1','Phalanx +3','Accuracy+10 Attack+10',}}
-	gear.PhalanxHands = {name="Merlinic Dastanas", augments={'INT+9','Pet: DEX+14','Phalanx +4',}}
-	gear.WSHead = {name="Merlinic Hood", augments={'Attack+15','"Cure" potency +3%','Weapon skill damage +6%','Mag. Acc.+13 "Mag.Atk.Bns."+13',}}
-	gear.THHead = {name="Merlinic Hood", augments={'Pet: VIT+2','INT+5','"Treasure Hunter"+1','Accuracy+11 Attack+11','Mag. Acc.+12 "Mag.Atk.Bns."+12',}}
-	gear.THHands = {name="Merlinic Dastanas", augments={'"Cure" potency +9%','Phys. dmg. taken -1%','"Treasure Hunter"+2','Accuracy+18 Attack+18','Mag. Acc.+12 "Mag.Atk.Bns."+12',}}
-	gear.WSCape = {name="Sucellos's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Crit.hit rate+10',}}
-	gear.NukeCape = {name="Sucellos's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','INT+10','"Mag.Atk.Bns."+10',}}
-	gear.TPHands = {name="Merlinic Dastanas", augments={'"Triple Atk."+4','MND+3','Magic Damage +6','Accuracy+13 Attack+13','Mag. Acc.+4 "Mag.Atk.Bns."+4',}}
-	gear.RefreshHands = {name="Merlinic Dastanas", augments={'Attack+21','Rng.Acc.+26','"Refresh"+1','Mag. Acc.+7 "Mag.Atk.Bns."+7',}}	
-	gear.ENFStaff = {name="Grioavolr", augments={'Enfb.mag. skill +13','Mag. Acc.+28','Magic Damage +4',}}
-	gear.NukeStaff = {name="Grioavolr", augments={'"Occult Acumen"+7','INT+7','Mag. Acc.+2','"Mag.Atk.Bns."+29','Magic Damage +6',}}
-	gear.MBStaff = {name="Grioavolr", augments={'Magic burst dmg.+7%','MP+58','Mag. Acc.+25','"Mag.Atk.Bns."+20',}}	
-	]]
-    -- Precast Sets
+    	-- Precast Sets
     
-    -- Precast sets to enhance JAs
-    --sets.precast.JA['Chainspell'] = {body="Vitivation Tabard +1"}
+    	-- Precast sets to enhance JAs
+    	--sets.precast.JA['Chainspell'] = {body="Vitivation Tabard +1"}
 	
 	-- Spells Fastcast 
 	
-    sets.precast.FC = {
+    	sets.precast.FC = {
 	head="Nahtirah Hat",
-    body="Jhakri Robe +2",
-    hands="Jhakri Cuffs +1",
-    legs="Aya. Cosciales +1",
-    feet="Jhakri Pigaches +1",
-    right_ring="Jhakri Ring",}
+    	body="Jhakri Robe +2",
+    	hands="Jhakri Cuffs +1",
+    	legs="Aya. Cosciales +1",
+    	feet="Jhakri Pigaches +1",
+    	right_ring="Jhakri Ring",}
 
-    sets.precast.FC.Impact = set_combine(sets.precast.FC, {})
+    	sets.precast.FC.Impact = set_combine(sets.precast.FC, {})
 
     -- Weaponskill sets
     
