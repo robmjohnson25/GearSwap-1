@@ -177,10 +177,10 @@ end
 
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
-    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Reives', 'Learning', 'Leveling')
+    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Refresh', 'Learning', 'Leveling')
     state.WeaponskillMode:options('Normal', 'Acc')
     state.CastingMode:options('Normal', 'Resistant')
-    state.IdleMode:options('Normal', 'Solo', 'PDT', 'Learning')
+    state.IdleMode:options('Normal', 'PDT', 'Learning', 'Leveling')
 
     gear.macc_hagondes = {}
 
@@ -190,6 +190,7 @@ function user_setup()
     send_command('bind @` input /ja "Burst Affinity" <me>')
 
     update_combat_form()
+	lockstyleset()
     --select_default_macro_book()
 end
 
@@ -208,31 +209,30 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
 
-    sets.buff['Burst Affinity'] = {}
-    sets.buff['Chain Affinity'] = {}
-    sets.buff.Convergence = {}
+    --sets.buff['Burst Affinity'] = {}
+    --sets.buff['Chain Affinity'] = {}
+    --sets.buff.Convergence = {}
     sets.buff.Diffusion = {feet="Luhlaza Charuqs"}
-    sets.buff.Enchainment = {}
-    sets.buff.Efflux = {}
+    --sets.buff.Enchainment = {}
+    --sets.buff.Efflux = {}
 
     
     -- Precast Sets
     
     -- Precast sets to enhance JAs
-    sets.precast.JA['Azure Lore'] = {}
+    --sets.precast.JA['Azure Lore'] = {}
 
 
     -- Waltz set (chr and vit)
-    sets.precast.Waltz = {}
-        
+    --sets.precast.Waltz = {}
+
     -- Don't need any special gear for Healing Waltz.
-    sets.precast.Waltz['Healing Waltz'] = {}
+    --sets.precast.Waltz['Healing Waltz'] = {}
 
     -- Fast cast sets for spells
     
-    sets.precast.FC = {}
+    --sets.precast.FC = {}
 
-       
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
@@ -247,7 +247,7 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Ayanmo Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
     
     sets.precast.WS.acc = set_combine(sets.precast.WS, {})
@@ -261,8 +261,8 @@ function init_gear_sets()
     sets.precast.WS['Sanguine Blade'] = {
 	ammo="Ginsen",
     head="Jhakri Coronal +1",
-    body="Jhakri Robe",
-    hands="Jhakri Cuffs +1",
+    body="Jhakri Robe +2",
+    hands=gear.HercMB,
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
@@ -271,13 +271,13 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 	
 	sets.precast.WS['Savage Blade'] = {
     ammo="Ginsen",
     head="Jhakri Coronal +1",
-    body="Jhakri Robe",
+    body="Jhakri Robe +2",
     hands="Jhakri Cuffs +1",
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
@@ -287,13 +287,13 @@ function init_gear_sets()
     waist="Thunder Belt",
     left_ring="Rajas Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 	
 	sets.precast.WS['Chant du Cygne'] = {
     ammo="Jukukik Feather",
     head="Aya. Zucchetto +1",
-    body="Ayanmo Corazza +1",
+    body="Ayanmo Corazza +2",
     hands="Aya. Manopolas +1",
     legs="Hashishin Tayt",
     feet="Aya. Gambieras +1",
@@ -303,13 +303,13 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Rajas Ring",
     right_ring="Enlivened Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
     sets.precast.WS['Swift Blade'] = {
 	ammo="Ginsen",
     head="Jhakri Coronal +1",
-    body="Jhakri Robe",
+    body="Jhakri Robe +2",
     hands="Jhakri Cuffs +1",
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
@@ -319,7 +319,7 @@ function init_gear_sets()
 	waist="Soil Belt",
 	left_ring="Rajas Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
     -- Midcast Sets
@@ -331,24 +331,8 @@ function init_gear_sets()
     
     sets.midcast['Blue Magic'].Physical = {
 	ammo="Ginsen",
-    head="Jhakri Coronal +1",
-    body="Jhakri Robe",
-    hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops +1",
-    feet={ name="Luhlaza Charuqs", augments={'Enhances "Diffusion" effect',}},
-    neck="Sanctity Necklace",
-    waist="Dynamic Belt",
-    left_ear="Ethereal Earring",
-    right_ear="Bladeborn Earring",
-    left_ring="Jhakri Ring",
-    right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
-	}
-
-    sets.midcast['Blue Magic'].PhysicalAcc = {
-    ammo="Ginsen",
     head="Aya. Zucchetto +1",
-    body="Ayanmo Corazza +1",
+    body="Ayanmo Corazza +2",
     hands="Aya. Manopolas +1",
     legs="Aya. Cosciales +1",
     feet="Aya. Gambieras +1",
@@ -358,31 +342,40 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},	
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
-    sets.midcast['Blue Magic'].PhysicalStr = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalAcc = {
+    ammo="Ginsen",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +2",
+    hands="Aya. Manopolas +1",
+    legs="Aya. Cosciales +1",
+    feet="Aya. Gambieras +1",
+    neck="Sanctity Necklace",
+    waist="Dynamic Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Jhakri Ring",
+    right_ring="Ayanmo Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},	
+	}
 
-    sets.midcast['Blue Magic'].PhysicalDex = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalStr = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalVit = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalDex = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalAgi = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalVit = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalInt = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalAgi = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalMnd = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalInt = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalChr = set_combine(sets.midcast['Blue Magic'].Physical,
-        {})
+    sets.midcast['Blue Magic'].PhysicalMnd = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
-    sets.midcast['Blue Magic'].PhysicalHP = set_combine(sets.midcast['Blue Magic'].Physical)
+    sets.midcast['Blue Magic'].PhysicalChr = set_combine(sets.midcast['Blue Magic'].Physical, {})
+
+    sets.midcast['Blue Magic'].PhysicalHP = set_combine(sets.midcast['Blue Magic'].Physical, {})
 
 
     -- Magical Spells --
@@ -390,8 +383,8 @@ function init_gear_sets()
     sets.midcast['Blue Magic'].Magical = {
     ammo="Mavi Tathlum",
     head="Jhakri Coronal +1",
-    body="Jhakri Robe",
-    hands="Jhakri Cuffs +1",
+    body="Jhakri Robe +2",
+    hands=gear.HercMB,
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
@@ -400,37 +393,20 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
-    sets.midcast['Blue Magic'].Magical.Resistant = set_combine(sets.midcast['Blue Magic'].Magical,
-        {})
+    sets.midcast['Blue Magic'].Magical.Resistant = set_combine(sets.midcast['Blue Magic'].Magical, {})
     
-    sets.midcast['Blue Magic'].MagicalMnd = set_combine(sets.midcast['Blue Magic'].Magical,
-        {})
+    sets.midcast['Blue Magic'].MagicalMnd = set_combine(sets.midcast['Blue Magic'].Magical, {})
 
-    sets.midcast['Blue Magic'].MagicalChr = set_combine(sets.midcast['Blue Magic'].Magical)
+    sets.midcast['Blue Magic'].MagicalChr = set_combine(sets.midcast['Blue Magic'].Magical, {})
+	
+	sets.midcast['Blue Magic'].MagicalVit = set_combine(sets.midcast['Blue Magic'].Magical, {})
 
-    sets.midcast['Blue Magic'].MagicalVit = set_combine(sets.midcast['Blue Magic'].Magical,
-        {})
+    sets.midcast['Blue Magic'].MagicalDex = set_combine(sets.midcast['Blue Magic'].Magical, {})
 
-    sets.midcast['Blue Magic'].MagicalDex = set_combine(sets.midcast['Blue Magic'].Magical)
-
-    sets.midcast['Blue Magic'].MagicAccuracy = {
-	ammo="Mavi Tathlum",
-    head="Jhakri Coronal +1",
-    body="Jhakri Robe",
-    hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops +1",
-    feet="Jhakri Pigaches +1",
-    neck="Sanctity Necklace",
-    waist="Dynamic Belt",
-    left_ear="Hecate's Earring",
-    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
-    left_ring="Jhakri Ring",
-    right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
-	}
+    sets.midcast['Blue Magic'].MagicAccuracy = set_combine(sets.midcast['Blue Magic'].Magical, {})
 
     -- Breath Spells --
     
@@ -476,17 +452,21 @@ function init_gear_sets()
 	--back="Cornflower Cape"
 	}
 
-	sets.Leveling = {
-	back="Aptitude Mantle",
+	sets.Leveling = { 
+	back=gear.CPCape,
 	}
-	
+
 	sets.Subtle = {
     neck="Bathy Choker",
+	head={ name="Lilitu Headpiece", augments={'STR+6','DEX+7','Attack+12',}},
     right_ear="Ouesk Pearl",
+	left_ring="Beeline Ring",
     right_ring="Rajas Ring",
 	}
 
-    sets.latent_refresh = {}
+    sets.latent_refresh = {
+	body="Jhakri Robe +2",
+	}
 
     -- Resting sets
     sets.resting = {}
@@ -495,39 +475,38 @@ function init_gear_sets()
     sets.idle = {
 	ammo="Ginsen",
     head="Aya. Zucchetto +1",
-	body="Assim. Jubbah +2",
+	body="Jhakri Robe +2",
+    hands="Assim. Bazu. +2",
+    legs="Carmine Cuisses +1",
+    feet="Aya. Gambieras +1",
+    neck="Sanctity Necklace",
+    waist="Windbuffet belt +1",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Ayanmo Ring",
+    right_ring="Vocane Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+	}
+
+    sets.idle.PDT = {
+	ammo="Ginsen",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +2",
     hands="Assim. Bazu. +2",
     legs="Aya. Cosciales +1",
     feet="Aya. Gambieras +1",
-    neck="Sanctity Necklace",
+    neck="Twilight Torque",
     waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
-    sets.idle.PDT = {}
+    sets.idle.Town = set_combine(sets.idle, {body="Councilor's Garb",})
 
-    sets.idle.Town = {
-	body="Councilor's Garb",
-	}
-
-    sets.idle.Solo = {
-	head="Aya. Zucchetto +1",
-    body="Ayanmo Corazza +1",
-    hands="Assim. Bazu. +2",
-    legs="Aya. Cosciales +1",
-    feet="Aya. Gambieras +1",
-    neck="Sanctity Necklace",
-    waist="Dynamic Belt",
-    left_ear="Steelflash Earring",
-    right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
-    right_ring="Vocane Ring",
-	back="Aptitude Mantle",
-	}
+    sets.idle.Leveling = set_combine( sets.idle, sets.Leveling)
 	
 	sets.idle.Learning = set_combine(sets.idle, sets.Learning)
     
@@ -535,21 +514,24 @@ function init_gear_sets()
     sets.defense.PDT = {	
 	ammo="Ginsen",
     head="Aya. Zucchetto +1",
-    body="Ayanmo Corazza +1",
+    body="Ayanmo Corazza +2",
     hands="Assim. Bazu. +2",
     legs="Aya. Cosciales +1",
     feet="Aya. Gambieras +1",
-    neck="Sanctity Necklace",
+    neck="Twilight Torque",
     waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},}
+    back="Solemnity Cape",
+	}
 
-    sets.defense.MDT = {}
+    sets.defense.MDT = set_combine(sets.defense.PDT, {})
 
-    sets.Kiting = {}
+	sets.Kiting = {
+	legs="Carmine Cuisses +1",
+	}
 
     -- Engaged sets
 
@@ -562,47 +544,79 @@ function init_gear_sets()
     sets.engaged = {
     ammo="Ginsen",
     head="Aya. Zucchetto +1",
-    body="Assim. Jubbah +2",
+    body="Ayanmo Corazza +2",
+    hands=gear.HercMB,
+    legs={ name="Samnuha Tights", augments={'STR+5','DEX+5','"Triple Atk."+1',}},
+    feet="Battlecast Gaiters",
+    neck="Clotharius Torque",
+    waist="Windbuffet Belt +1",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="K'ayres Ring",
+    right_ring="Rajas Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+	}
+
+    sets.engaged.Acc = {
+	ammo="Honed Tathlum",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +2",
     hands="Assim. Bazu. +2",
-    legs="Aya. Cosciales +1",
+    legs="Jhakri Slops +1",
     feet="Aya. Gambieras +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
-    right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
+    right_ring="Beeline Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
-
-    sets.engaged.Acc = {}
 
 	sets.engaged.Subtle = set_combine(sets.engaged, sets.Subtle)
 
-    sets.engaged.DW = {
-	ammo="Ginsen",
-    head="Aya. Zucchetto +1",
-    body="Assim. Jubbah +2",
-    hands="Assim. Bazu. +2",
-    legs="Aya. Cosciales +1",
-    feet="Aya. Gambieras +1",
-    neck="Sanctity Necklace",
-    waist="Dynamic Belt",
-    left_ear="Steelflash Earring",
-    right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
-    right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +8%',}},
-	}
-
-    sets.engaged.DW.Acc = {}
-	
-	sets.engaged.DW.Subtle = set_combine(sets.engaged.DW, sets.Subtle)
+	sets.engaged.Refresh = set_combine(sets.engaged, sets.latent_refresh)
 
     sets.engaged.Learning = set_combine(sets.engaged, sets.Learning)
     
 	sets.engaged.Leveling = set_combine(sets.engaged, sets.Leveling)
 	
+	sets.engaged.DW = {
+    ammo="Ginsen",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +2",
+    hands=gear.HercMB,
+    legs={ name="Samnuha Tights", augments={'STR+5','DEX+5','"Triple Atk."+1',}},
+    feet="Battlecast Gaiters",
+    neck="Clotharius Torque",
+    waist="Windbuffet Belt +1",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="K'ayres Ring",
+    right_ring="Rajas Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+	}
+
+    sets.engaged.DW.Acc = {
+	ammo="Honed Tathlum",
+    head="Aya. Zucchetto +1",
+    body="Ayanmo Corazza +2",
+    hands="Assim. Bazu. +2",
+    legs="Jhakri Slops +1",
+    feet="Aya. Gambieras +1",
+    neck="Sanctity Necklace",
+    waist="Dynamic Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Ayanmo Ring",
+    right_ring="Beeline Ring",
+    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+	}
+	
+	sets.engaged.DW.Subtle = set_combine(sets.engaged.DW, sets.Subtle)
+
+	sets.engaged.DW.Refresh = set_combine(sets.engaged.DW, sets.latent_refresh)
+
 	sets.engaged.DW.Learning = set_combine(sets.engaged.DW, sets.Learning)
 	
 	sets.engaged.DW.Leveling = set_combine(sets.engaged.DW, sets.Leveling)
@@ -714,4 +728,7 @@ end
     end
 end ]]
 
-
+	-- Set a Style Lock
+function lockstyleset()
+	send_command('wait 2;input /lockstyleset 20')
+end
