@@ -42,7 +42,8 @@ function user_setup()
 	
 	update_combat_weapon()
 	update_melee_groups()
-	select_default_macro_book()
+	--select_default_macro_book()
+	update_combat_form()
 	
 	-- Additional Binds
 	--send_command('alias g510_m1g13 input /ws "Ukko\'s Fury" <t>;')
@@ -57,7 +58,7 @@ function init_gear_sets()
 	--------------------------------------
 	
 	-- Sets to apply to arbitrary JAs
-	sets.precast.JA.Berserk = {body="Pumm. Lorica +1",feet="Agoge Calligae +1"}
+	sets.precast.JA.Berserk = {body="Pumm. Lorica +2",feet="Agoge Calligae +1"}
     sets.precast.JA['Aggressor'] = {head="Pumm. Mask +1",body="Agoge Lorica +1"}
     sets.precast.JA['Mighty Strikes'] = {hands="Agoge Mufflers +1"}
 	sets.precast.JA['Blood Rage'] = {body="Rvg. Lorica +2"}
@@ -70,35 +71,35 @@ function init_gear_sets()
 	sets.precast.Waltz['Healing Waltz'] = {}
 
     -- Sets for fast cast gear for spells
-	sets.precast.FC = {ear2="Loquacious Earring"}
+	sets.precast.FC = {}
 
     -- Fast cast gear for specific spells or spell maps
 	sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {})
 
 	-- Weaponskill sets
 	sets.precast.WS = {
-	ammo="Aqreqaq Bomblet",
-	head="Otomi Helm",
-	neck="Portus Collar",
-	ear1="Moonshade Earring",
-	ear2="Brutal Earring",
-	body="Mes. Haubergeon",
-	hands="Pumm. Mufflers +1",
-	ring1="Ifrit Ring +1",
-	ring2="Ifrit Ring +1"
-	back="Mauler's Mantle",
-	waist="Windbuffet Belt +1",
-	legs="Agoge Cuisses +1",
-	feet="Pumm. Calligae +1",
+	ammo="Yetshila",
+    head="Flam. Zucchetto +1",
+    body="Pumm. Lorica +2",
+    hands="Flam. Manopolas +2",
+    legs="Pumm. Cuisses +2",
+    feet="Sulev. Leggings +1",
+    neck="Warrior's Beads",
+    waist="Thunder Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Moonbeam Ring",
+    right_ring="Flamma Ring",
+    back={ name="Cichol's Mantle", augments={'STR+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}},
 	}
 	
 	sets.precast.WS.AccLow = set_combine(sets.precast.WS, {})
 	sets.precast.WS.AccHigh = set_combine(sets.precast.WS.AccLow, {})
 	sets.precast.WS.Attack = set_combine(sets.precast.WS, {})
-	sets.precast.WS.MS = set_combine(sets.precast.WS, {ammo="Yetshila +1",back="Cavaros Mantle",feet="Huginn Gambieras"})
+	sets.precast.WS.MS = set_combine(sets.precast.WS, {})
 	
 	-- Specific weaponskill sets.
-	sets.precast.WS['Upheaval'] = {}
+	--[[sets.precast.WS['Upheaval'] = {}
 	sets.precast.WS['Upheaval'].AccLow = set_combine(sets.precast.WS['Upheaval'], {})
 	sets.precast.WS['Upheaval'].AccHigh = set_combine(sets.precast.WS['Upheaval'].AccLow, {})
 	sets.precast.WS['Upheaval'].Attack = set_combine(sets.precast.WS['Upheaval'], {})
@@ -133,7 +134,7 @@ function init_gear_sets()
 	sets.precast.WS['Resolution'].AccHigh = set_combine(sets.precast.WS['Resolution'].AccLow, {})
 	sets.precast.WS['Resolution'].Attack = set_combine(sets.precast.WS['Resolution'], {})
 	sets.precast.WS['Resolution'].MS = set_combine(sets.precast.WS['Resolution'], {ammo="Yetshila +1",back="Cavaros Mantle",feet="Huginn Gambieras"})
-	
+	]]
 
 	--------------------------------------
 	-- Midcast sets
@@ -156,30 +157,30 @@ function init_gear_sets()
 
 	-- Idle sets
 	sets.idle = {
-	ammo="Yetshila +1",
-	head="Felistris Mask",
-	neck="Twilight Torque",
-	ear1="Tripudio Earring",
-	ear2="Brutal Earring",
-	body={ name="Xaddi Mail", augments={'VIT+12','Phys. dmg. taken -5','Magic dmg. taken -3',}},
-	hands="Agoge Mufflers +1",
-	ring1="Dark Ring",
-	ring2="Defending Ring",
-	back="Repulse Mantle",
-	waist="Flume Belt",
-	legs="Hachiryu Haidate",
-	feet="Hermes' Sandals +1",
+	ammo="Ginsen",
+    head="Flam. Zucchetto +1",
+    body="Pumm. Lorica +2",
+    hands="Flam. Manopolas +2",
+    legs="Pumm. Cuisses +2",
+    feet="Pumm. Calligae +2",
+    neck="Warrior's Beads",
+    waist="Ioskeha Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Moonbeam Ring",
+    right_ring="Flamma Ring",
+    back={ name="Cichol's Mantle", augments={'STR+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}},
 	}
 
-	sets.idle.Town = {}
+	sets.idle.Town = set_combine(sets.idle, {})
 	
-	sets.idle.Regen = {}
+	sets.idle.Regen = set_combine(sets.idle, {})
 	
-	sets.idle.Weak = {}
+	sets.idle.Weak = set_combine(sets.idle, {})
 	
 	-- Defense sets
 	sets.defense.PDT = {}
-	sets.defense.Reraise = set_combine(sets.defense.PDT, {head="Twilight Helm",body="Twilight Mail"})
+	sets.defense.Reraise = set_combine(sets.defense.PDT, {})
 	sets.defense.MDT = {}
 
     -- Gear to wear for kiting
@@ -198,19 +199,19 @@ function init_gear_sets()
 	-- If using a weapon that isn't specified later, the basic engaged sets should automatically be used.
 	-- Equip the weapon you want to use and engage, disengage, or force update with f12, the correct gear will be used; default weapon is whats equip when file loads.
 	sets.engaged = {
-	ammo="Yetshila +1",
-	head="Felistris Mask",
-	neck="Portus Collar",
-	ear1="Trux Earring",
-	ear2="Brutal Earring",
-	body={ name="Xaddi Mail", augments={'Attack+15','Accuracy+10','"Store TP"+3',}},
-	hands="Cizin Mufflers +1",
-	ring1="K'ayres Ring",
-	ring2="Rajas Ring",
-	back="Mauler's Mantle",
-	waist="Windbuffet Belt +1",
-	legs="Agoge Cuisses +1",
-	feet="Ejekamal Boots",
+	ammo="Ginsen",
+    head="Flam. Zucchetto +1",
+    body="Pumm. Lorica +2",
+    hands="Flam. Manopolas +2",
+    legs="Pumm. Cuisses +2",
+    feet="Pumm. Calligae +2",
+    neck="Warrior's Beads",
+    waist="Ioskeha Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Moonbeam Ring",
+    right_ring="Flamma Ring",
+    back={ name="Cichol's Mantle", augments={'STR+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}},
 	}
 	
 	sets.engaged.AccLow = set_combine(sets.engaged, {})
@@ -219,7 +220,7 @@ function init_gear_sets()
 	sets.engaged.AccLow.PDT = set_combine(sets.engaged.PDT, {})
 	sets.engaged.AccHigh.PDT = set_combine(sets.engaged.AccLow.PDT, {})
 	
-	sets.engaged.Conqueror = {}
+	--[[sets.engaged.Conqueror = {}
 	sets.engaged.Conqueror.AccLow = set_combine(sets.engaged.Conqueror, {})
 	sets.engaged.Conqueror.AccHigh = set_combine(sets.engaged.Conqueror.AccLow, {})
 	sets.engaged.Conqueror.PDT = set_combine(sets.engaged.Conqueror, {})
@@ -257,6 +258,55 @@ function init_gear_sets()
 	sets.engaged.Ragnarok.PDT = set_combine(sets.engaged.Ragnarok, {})
 	sets.engaged.Ragnarok.AccLow.PDT = set_combine(sets.engaged.Ragnarok.PDT, {})
 	sets.engaged.Ragnarok.AccHigh.PDT = set_combine(sets.engaged.Ragnarok.AccLow.PDT, {})
+	]]
+	--------------------------------------
+	-- TD sets
+	--------------------------------------	
+	sets.engaged.TD = {
+	ammo="Ginsen",
+	head="Flam. Zucchetto +1",
+	body="Pumm. Lorica +2",
+	hands="Flam. Manopolas +2",
+	legs="Pumm. Cuisses +2",
+	feet="Pumm. Calligae +2",
+	neck="Warrior's Beads",
+	waist="Ioskeha Belt",
+	left_ear="Steelflash Earring",
+	right_ear="Bladeborn Earring",
+	left_ring="Moonbeam Ring",
+	right_ring="Flamma Ring",
+	back={ name="Cichol's Mantle", augments={'STR+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}},
+	}
+	
+	sets.engaged.TD.AccLow = set_combine(sets.engaged.TD, {})
+	sets.engaged.TD.AccHigh = set_combine(sets.engaged.TD.AccLow, {})
+	sets.engaged.TD.PDT = set_combine(sets.engaged.TD, {})
+	sets.engaged.TD.AccLow.PDT = set_combine(sets.engaged.PDT, {})
+	sets.engaged.TD.AccHigh.PDT = set_combine(sets.engaged.AccLow.PDT, {})
+	--------------------------------------
+	-- DW sets
+	--------------------------------------
+    sets.engaged.DW = {
+	ammo="Ginsen",
+    head="Flam. Zucchetto +1",
+    body="Pumm. Lorica +2",
+    hands="Flam. Manopolas +2",
+    legs="Pumm. Cuisses +2",
+    feet="Pumm. Calligae +2",
+    neck="Warrior's Beads",
+    waist="Ioskeha Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Moonbeam Ring",
+    right_ring="Flamma Ring",
+    back={ name="Cichol's Mantle", augments={'STR+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}},
+	}
+	
+	sets.engaged.DW.AccLow = set_combine(sets.engaged.DW, {})
+	sets.engaged.DW.AccHigh = set_combine(sets.engaged.DW.AccLow, {})
+	sets.engaged.DW.PDT = set_combine(sets.engaged.DW, {})
+	sets.engaged.DW.AccLow.PDT = set_combine(sets.engaged.PDT, {})
+	sets.engaged.DW.AccHigh.PDT = set_combine(sets.engaged.AccLow.PDT, {})
 	
 	--------------------------------------
 	-- Custom buff sets
@@ -329,6 +379,7 @@ end
 function job_status_change(newStatus, oldStatus, eventArgs)
 	update_combat_weapon()
 	update_melee_groups()
+	update_combat_form()
 end
 
 -- Called when a player gains or loses a buff.
@@ -403,6 +454,7 @@ end
 function job_update(cmdParams, eventArgs)
 	update_combat_weapon()
 	update_melee_groups()
+	update_combat_form()
 end
 
 -- Set eventArgs.handled to true if we don't want the automatic display to be run.
@@ -482,5 +534,16 @@ function is_sc_element_today(spell)
         return true
     else
         return false
+    end
+end
+
+function update_combat_form()
+    -- Check for HTD or single-wielding
+    if player.equipment.sub == 'Round Shield' or player.equipment.sub == 'empty' then
+        state.CombatForm:reset()
+    elseif player.equipment.sub == 'Sword Strap' then
+		state.CombatForm:set('TD')
+	else
+        state.CombatForm:set('DW')
     end
 end
