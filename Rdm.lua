@@ -14,6 +14,9 @@ end
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
     state.Buff.Saboteur = buffactive.saboteur or false
+	
+	state.CapacityMode = M(false, 'Capacity Point Mantle')
+	
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -22,15 +25,19 @@ end
 
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
-    state.OffenseMode:options('None', 'Normal')
+    state.OffenseMode:options('None', 'Leveling')
     state.HybridMode:options('Normal')
     state.CastingMode:options('Normal', 'ConserveMP')
-    state.IdleMode:options('Normal', 'PDT', 'MDT')
+    state.IdleMode:options('Normal', 'Leveling')
 	
+	lockstyleset()
 	state.MagicBurst = M(false, 'Magic Burst')
-	--[[
+	
+	-- send_command('bind != gs c toggle CapacityMode')
+	
 	send_command('bind ^q gs c cycle CastingMode')
 	send_command('bind !q gs c toggle MagicBurst')
+	--[[
 	send_command('bind ^g input /recast Stratagems <me>')
 	send_command('bind ^h input /ma "Haste II" <me>')
 	send_command('bind ^, input /ma Blink <me>')
@@ -64,22 +71,27 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
-    	-- Precast Sets
+    sets.CapacityMantle = {back=gear.CPCape}
+	
+	-- Precast Sets
     
-    	-- Precast sets to enhance JAs
-    	--sets.precast.JA['Chainspell'] = {body="Vitivation Tabard +1"}
+    -- Precast sets to enhance JAs
+    sets.precast.JA['Chainspell'] = {body="Vitiation Tabard"}
 	
 	-- Spells Fastcast 
 	
-    	sets.precast.FC = {
+    sets.precast.FC = {
+    ammo="Impatiens",
 	head="Nahtirah Hat",
-    	body="Jhakri Robe +2",
-    	hands="Jhakri Cuffs +1",
-    	legs="Aya. Cosciales +1",
-    	feet="Jhakri Pigaches +1",
-    	right_ring="Jhakri Ring",}
+    body="Vitiation Tabard",
+    hands="Gende. Gages +1",
+    legs={ name="Lengo Pants", augments={'INT+7','Mag. Acc.+7','"Mag.Atk.Bns."+3','"Refresh"+1',}},
+    feet={ name="Merlinic Crackows", augments={'"Mag.Atk.Bns."+18','DEX+2','Accuracy+15 Attack+15','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+    right_ring="Jhakri Ring",
+    back="Solemnity Cape",
+	}
 
-    	sets.precast.FC.Impact = set_combine(sets.precast.FC, {})
+    sets.precast.FC.Impact = set_combine(sets.precast.FC, {})
 
     -- Weaponskill sets
     
@@ -96,11 +108,11 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Ayanmo Ring",
     right_ring="Rajas Ring",
-    back="Vassal's Mantle",
+    back=gear.RdmCTP,
 	}
 
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
-    sets.precast.WS['Requiescat'] = set_combine(sets.precast.WS, {
+    sets.precast.WS['Requiescat'] = set_combine(sets.precast.WS['Sanguine Blade'], {
 	neck="Soil Gorget",
 	waist="Soil Belt",
 	})
@@ -118,7 +130,7 @@ function init_gear_sets()
     right_ear="Novio Earring",
     left_ring="Ayanmo Ring",
     right_ring="Jhakri Ring",
-    back="Vassal's Mantle",
+    back=gear.RdmCTP,
 	}
 
 	sets.precast.WS['Chant du Cygne'] = set_combine(sets.precast.WS, {
@@ -132,29 +144,55 @@ function init_gear_sets()
 	})
 
     -- Midcast Sets
-    
+	
     sets.midcast.FastRecast = {}
 
-    sets.midcast.Cure = {}
+    sets.midcast.Cure = {
+    ammo="Ginsen",
+    head="Vitiation Chapeau",
+    body="Vitiation Tabard",
+    hands="Jhakri Cuffs +1",
+    legs="Atrophy Tights +1",
+    feet="Leth. Houseaux +1",
+    neck="Sanctity Necklace",
+    waist="Dynamic Belt",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Zodiac Ring",
+    right_ring="Vocane Ring",
+    back="Solemnity Cape",
+	}
 
     sets.midcast.Curaga = sets.midcast.Cure
     sets.midcast.CureSelf = {}
 
-    sets.midcast['Enhancing Magic'] = {}
+    sets.midcast['Enhancing Magic'] = {
+	head="Jhakri Coronal +1",
+    body="Vitiation Tabard",
+    hands="Atrophy Gloves +1",
+    legs="Carmine Cuisses +1",
+    feet="Leth. Houseaux +1",
+    neck="Sanctity Necklace",
+    waist="Dynamic Belt",
+    left_ear="Hecate's Earring",
+    right_ear="Novio Earring",
+    left_ring="Jhakri Ring",
+	back=gear.RdmCTP,
+	}
 
-    sets.midcast.Phalanx = {}
+    sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {})
 
 	sets.midcast['Temper II']= sets.midcast['Enhancing Magic']	
 	
 	sets.midcast.Blink = sets.midcast.FastRecast
 	
-	sets.midcast.Aquaveil = {}
+	sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {legs="Shedir Seraweels",})
 	
-	sets.midcast.Refresh = {}
+	sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {body="Atrophy Tabard +2",})
 	
-    sets.midcast.Stoneskin = set_combine(sets.midcast.FastCast, {})
+    sets.midcast.Stoneskin =set_combine(sets.midcast['Enhancing Magic'], {legs="Shedir Seraweels",})
 
-    sets.midcast.Haste = set_combine(sets.midcast.FastCast, {})	
+    sets.midcast.Haste = set_combine(sets.midcast['Enhancing Magic'], {})
 	
 	sets.midcast.Flurry = sets.midcast.Haste	
 	sets.midcast.Firestorm = sets.midcast.Haste
@@ -174,7 +212,7 @@ function init_gear_sets()
 	sets.midcast['Refresh III'] = sets.midcast.Refresh
 	sets.midcast['Regen II'] = sets.midcast.Refresh
 	
-	sets.midcast.Protect = {}
+	sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {})
 	sets.midcast.Protectra = sets.midcast.Protect
 	sets.midcast.Shell = sets.midcast.Protect
 	sets.midcast.Shellra = sets.midcast.Protect
@@ -202,7 +240,7 @@ function init_gear_sets()
 		
     sets.midcast['Enfeebling Magic'] = {
 	head="Jhakri Coronal +1",
-    body="Jhakri Robe +2",
+    body="Atrophy Tabard +2",
     hands="Jhakri Cuffs +1",
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
@@ -213,7 +251,18 @@ function init_gear_sets()
     right_ring="Jhakri Ring",
 	}
 		
-    sets.midcast['Dia III'] = {}
+    sets.midcast['Dia III'] = {
+	head="Jhakri Coronal +1",
+    body="Atrophy Tabard +2",
+    hands="Jhakri Cuffs +1",
+    legs="Jhakri Slops +1",
+    feet="Jhakri Pigaches +1",
+    neck="Sanctity Necklace",
+    left_ear="Novio Earring",
+    right_ear="Hecate's Earring",
+    left_ring="Ayanmo Ring",
+    right_ring="Jhakri Ring",
+	}
 		
 	sets.midcast['Slow II'] = sets.midcast['Dia III']	
 	sets.midcast['Paralyze II'] = sets.midcast['Dia III']
@@ -231,6 +280,7 @@ function init_gear_sets()
     right_ear="Hecate's Earring",
     left_ring="Ayanmo Ring",
     right_ring="Jhakri Ring",
+	back="Toro Cape",
 	}
 		
 	sets.midcast['Elemental Magic'].ConserveMP = {}
@@ -258,15 +308,14 @@ function init_gear_sets()
 
     -- Sets for special buff conditions on spells.
 
-    --[[
+    
 	sets.buff.ComposureOther = {
-	head="Lethargy Chappel +1",
-    body="Lethargy Sayon +1",hands="Lethargy Gantherots +1",
-	legs="Lethargy Fuseau +1",feet="Lethargy Houseaux +1"}
+	--head="Lethargy Chappel +1",
+    --body="Lethargy Sayon +1",hands="Lethargy Gantherots +1",
+	legs="Lethargy Fuseau",feet="Lethargy Houseaux +1"}
 
-    sets.buff.Saboteur = {hands="Lethargy Gantherots +1"}
-    ]]
-
+    -- sets.buff.Saboteur = {hands="Lethargy Gantherots +1"}
+    
     -- Sets to return to when not performing an action.
     
     -- Resting sets
@@ -274,7 +323,7 @@ function init_gear_sets()
     -- Idle sets
     sets.idle = {
 	ammo="Ginsen",
-    head="Aya. Zucchetto +1",
+    head="Vitiation Chapeau",
     body="Jhakri Robe +2",
     hands="Aya. Manopolas +1",
     legs="Carmine Cuisses +1",
@@ -283,11 +332,18 @@ function init_gear_sets()
     waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
-    back="Estoqueur's Cape",
+    back=gear.RdmCTP,
 	}
     
+	sets.idle.Town = set_combine(sets.idle, {body="Councilor's Garb",})
+	
+	sets.idle.Leveling = set_combine(sets.idle, {
+	legs={ name="Lengo Pants", augments={'INT+7','Mag. Acc.+7','"Mag.Atk.Bns."+3','"Refresh"+1',}},
+	back=gear.CPCape,
+	})
+	
     -- Defense sets
     sets.defense.PDT = {
 	ammo="Ginsen",
@@ -300,7 +356,7 @@ function init_gear_sets()
     waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
     back="Solemnity Cape",
 	}
@@ -326,15 +382,16 @@ function init_gear_sets()
     hands="Aya. Manopolas +1",
     legs="Jhakri Slops +1",
     feet="Battlecast Gaiters",
-    neck="Sanctity Necklace",
+    neck="Clotharius Torque",
     waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="K'ayres Ring",
     right_ring="Rajas Ring",
-    back="Vassal's Mantle",
+	back=gear.RdmCTP,
 	}
 
+	sets.engaged.Leveling = set_combine(sets.engaged, {back=gear.CPCape})
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -408,7 +465,9 @@ function customize_idle_set(idleSet)
     if player.mpp < 51 then
         idleSet = set_combine(idleSet, sets.latent_refresh)
     end
-    
+	--[[if state.CapacityMode.value then
+        idleSet = set_combine(idleSet, sets.CapacityMantle)
+    end]]   
     return idleSet
 end
 
@@ -418,7 +477,17 @@ function display_current_job_state(eventArgs)
     eventArgs.handled = true
 end
 
--------------------------------------------------------------------------------------------------------------------
+function customize_melee_set(meleeSet)
+	if state.TreasureMode.value == 'Fulltime' then
+		meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+	end
+    --[[if state.CapacityMode.value then
+        meleeSet = set_combine(meleeSet, sets.CapacityMantle)
+    end]]
+	return meleeSet
+end
+
+--------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
 
@@ -434,4 +503,8 @@ function select_default_macro_book()
     else
         set_macro_page(1, 5)
     end
+end
+
+function lockstyleset()
+	send_command('wait 2;input /lockstyleset 17')
 end
