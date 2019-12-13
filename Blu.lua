@@ -16,14 +16,12 @@ end
 function job_setup()
 	include('Mote-TreasureHunter')
 	
-	state.CapacityMode = M(false, 'Capacity Point Mantle')
-
-    state.Buff['Burst Affinity'] = buffactive['Burst Affinity'] or false
-    state.Buff['Chain Affinity'] = buffactive['Chain Affinity'] or false
-    state.Buff.Convergence = buffactive.Convergence or false
-    state.Buff.Diffusion = buffactive.Diffusion or false
-    state.Buff.Efflux = buffactive.Efflux or false
-    state.Buff['Unbridled Learning'] = buffactive['Unbridled Learning'] or false
+	state.Buff['Burst Affinity'] = buffactive['Burst Affinity'] or false
+	state.Buff['Chain Affinity'] = buffactive['Chain Affinity'] or false
+	state.Buff.Convergence = buffactive.Convergence or false
+	state.Buff.Diffusion = buffactive.Diffusion or false
+	state.Buff.Efflux = buffactive.Efflux or false
+	state.Buff['Unbridled Learning'] = buffactive['Unbridled Learning'] or false
 
     blue_magic_maps = {}
     
