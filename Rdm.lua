@@ -13,10 +13,7 @@ end
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
-    state.Buff.Saboteur = buffactive.saboteur or false
-	
-	state.CapacityMode = M(false, 'Capacity Point Mantle')
-	
+	state.Buff.Saboteur = buffactive.saboteur or false
 end
 
 -------------------------------------------------------------------------------------------------------------------
