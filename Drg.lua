@@ -16,14 +16,11 @@ end
 -- Setup vars that are user-independent.
 function job_setup()
 	get_combat_form()
-    include('Mote-TreasureHunter')
-    state.TreasureMode:set('Tag')
-    
-    state.CapacityMode = M(false, 'Capacity Point Mantle')
+	include('Mote-TreasureHunter')
+	state.TreasureMode:set('Tag')
 	
-    -- list of weaponskills that make better use of Gavialis helm
-    wsList = S{}
-
+	-- list of weaponskills that make better use of Gavialis helm
+	wsList = S{}
 	state.Buff = {}
 	-- JA IDs for actions that always have TH: Provoke, Animated Flourish
 	info.default_ja_ids = S{35, 204}
