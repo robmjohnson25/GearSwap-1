@@ -46,10 +46,10 @@ function user_setup()
 
 	lockstyleset()
 	--select_default_macro_book(1, 14)
-    send_command('bind != gs c toggle CapacityMode')
+    --send_command('bind != gs c toggle CapacityMode')
 	send_command('bind ^= gs c cycle treasuremode')
-    send_command('bind ^[ input /lockstyle on')
-    send_command('bind ![ input /lockstyle off')
+    -- send_command('bind ^[ input /lockstyle on')
+    -- send_command('bind ![ input /lockstyle off')
 end
 
 
@@ -57,8 +57,8 @@ end
 function file_unload()
 	send_command('unbind ^[')
 	send_command('unbind ![')
-	send_command('unbind ^=')
-	send_command('unbind !=')
+	-- send_command('unbind ^=')
+	-- send_command('unbind !=')
 end
 
 
@@ -67,24 +67,11 @@ function init_gear_sets()
 	--------------------------------------
 	-- Start defining the sets
 	--------------------------------------
-    Brigantia = {}
-    Brigantia.TP = {}
-    Brigantia.WS = {}
-
-    Valorous = {}
-    Valorous.Hands = {}
-    Valorous.Hands.TP = {}
-    Valorous.Hands.WS = {}
-    
-    Valorous.Feet = {}
-    Valorous.Feet.WS ={}
-    Valorous.Feet.TH = {}
-    Valorous.Feet.TP = {}
     
     -- Precast Sets
 	-- Precast sets to enhance JAs
 	sets.precast.JA.Angon = {}
-    sets.CapacityMantle = {back="Aptitude Mantle"}
+    sets.CapacityMantle = {back=gear.CPCape}
     --sets.Berserker = {neck="Berserker's Torque"}
     --sets.WSDayBonus = {}
 	--sets.Organizer = {}
@@ -128,38 +115,27 @@ function init_gear_sets()
 	-- Weaponskill sets
 	-- Default set for any weaponskill that isn't any more specifically defined
 	sets.precast.WS = {
-	ammo="Ginsen",
-    head="Sulevia's Mask",
+    ammo="Ginsen",
+    head="Sulevia's Mask +1",
     body="Sulevia's Plate.",
-    hands="Sulevia's Gauntlets",
+    hands="Sulev. Gauntlets +1",
     legs="Sulevia's Cuisses",
-    feet="Ostro Greaves",
+    feet="Sulev. Leggings +1",
     neck="Sanctity Necklace",
-    waist="Windbuffet belt +1",
+    waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
-    left_ring="Sulevia's Ring",
+    left_ring="Apate Ring",
     right_ring="Rajas Ring",
-    back={ name="Brigantia's Mantle", augments={'Accuracy+12 Attack+12',}},
+    back={ name="Brigantia's Mantle", augments={'STR+13','Accuracy+20 Attack+20',}},
 	}
 	sets.precast.WS.Acc = set_combine(sets.precast.WS, {})
 	
 	-- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
-	sets.precast.WS['Stardiver'] = {
-    ammo="Ginsen",
-    head="Sulevia's Mask",
-    body="Sulevia's Plate.",
-    hands="Sulevia's Gauntlets",
-    legs="Sulevia's Cuisses",
-    feet="Sulevia's Leggings",
+	sets.precast.WS['Stardiver'] = set_combine(sets.precast.WS, {
     neck="Soil Gorget",
     waist="Soil Belt",
-    left_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
-    right_ear="Bladeborn Earring",
-    left_ring="Sulevia's Ring",
-    right_ring="Rajas Ring",
-    back={ name="Brigantia's Mantle", augments={'Accuracy+12 Attack+12',}},
-    }
+    })
 	sets.precast.WS['Stardiver'].Mid = set_combine(sets.precast.WS['Stardiver'], {})
 	sets.precast.WS['Stardiver'].Acc = set_combine(sets.precast.WS.Acc, {})
 
@@ -196,19 +172,19 @@ function init_gear_sets()
 	})
 	
 	sets.idle.Field = set_combine(sets.idle, {
-	ammo="Ginsen",
-    head="Sulevia's Mask",
+    ammo="Ginsen",
+    head="Sulevia's Mask +1",
     body="Sulevia's Plate.",
-    hands="Sulevia's Gauntlets",
-    legs="Sulevia's Cuisses",
-    feet="Sulevia's Leggings",
+    hands="Sulev. Gauntlets +1",
+    legs="Carmine Cuisses +1",
+    feet="Sulev. Leggings +1",
     neck="Sanctity Necklace",
-    waist="Windbuffet belt +1",
+    waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Sulevia's Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
-    back={ name="Brigantia's Mantle", augments={'Accuracy+12 Attack+12',}},
+    back="Solemnity Cape",
 	})
     sets.idle.Sphere = set_combine(sets.idle, {})
 
@@ -219,7 +195,20 @@ function init_gear_sets()
 	sets.idle.Weak = set_combine(sets.idle.Field, {})
 	
 	-- Defense sets
-	sets.defense.PDT = {}
+	sets.defense.PDT = {
+	head="Sulevia's Mask +1",
+    body="Sulevia's Plate.",
+    hands="Sulev. Gauntlets +1",
+    legs="Sulevia's Cuisses",
+    feet="Sulev. Leggings +1",
+    neck="Twilight Torque",
+    waist="Windbuffet Belt +1",
+    left_ear="Steelflash Earring",
+    right_ear="Bladeborn Earring",
+    left_ring="Defending Ring",
+    right_ring="Vocane Ring",
+    back="Solemnity Cape",
+	}
 
 	sets.defense.Reraise = set_combine(sets.defense.PDT, {})
 
@@ -239,18 +228,18 @@ function init_gear_sets()
 	-- Normal melee group
 	sets.engaged = {
     ammo="Ginsen",
-    head="Sulevia's Mask",
-    body="Sulevia's Plate.",
-    hands="Sulevia's Gauntlets",
-    legs="Sulevia's Cuisses",
+    head="Yaoyotl Helm",
+    body={ name="Found. Breastplate", augments={'Accuracy+3','Mag. Acc.+6',}},
+    hands="Sulev. Gauntlets +1",
+    legs={ name="Valor. Hose", augments={'CHR+1','Attack+2','Quadruple Attack +1','Accuracy+7 Attack+7',}},
     feet="Ostro Greaves",
-    neck="Sanctity Necklace",
-    waist="Windbuffet belt +1",
+    neck="Clotharius Torque",
+    waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Sulevia's Ring",
+    left_ring="Apate Ring",
     right_ring="Rajas Ring",
-    back={ name="Brigantia's Mantle", augments={'Accuracy+12 Attack+12',}},
+    back={ name="Brigantia's Mantle", augments={'STR+13','Accuracy+20 Attack+20',}},
 	}
 
 	sets.engaged.Mid = set_combine(sets.engaged, {})
@@ -401,9 +390,9 @@ function customize_melee_set(meleeSet)
 	if state.TreasureMode.value == 'Fulltime' then
 		meleeSet = set_combine(meleeSet, sets.TreasureHunter)
 	end
-    if state.CapacityMode.value then
+    --[[if state.CapacityMode.value then
         meleeSet = set_combine(meleeSet, sets.CapacityMantle)
-    end
+    end]]
 	return meleeSet
 end
 
