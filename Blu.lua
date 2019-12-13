@@ -8,11 +8,16 @@ function get_sets()
     
     -- Load and initialize the include file.
     include('Mote-Include.lua')
+	include('organizer-lib')
 end
 
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
+	include('Mote-TreasureHunter')
+	
+	state.CapacityMode = M(false, 'Capacity Point Mantle')
+
     state.Buff['Burst Affinity'] = buffactive['Burst Affinity'] or false
     state.Buff['Chain Affinity'] = buffactive['Chain Affinity'] or false
     state.Buff.Convergence = buffactive.Convergence or false
@@ -92,7 +97,8 @@ function job_setup()
         'Blastbomb','Blazing Bound','Bomb Toss','Cursed Sphere','Dark Orb','Death Ray',
         'Diffusion Ray','Droning Whirlwind','Embalming Earth','Firespit','Foul Waters',
         'Ice Break','Leafstorm','Maelstrom','Rail Cannon','Regurgitation','Rending Deluge',
-        'Retinal Glare','Subduction','Spectral Floe','Tem. Upheaval','Water Bomb'
+        'Retinal Glare','Subduction','Spectral Floe','Tem. Upheaval','Water Bomb','Entomb',
+		'tenebral crush',
     }
 
     -- Magical spells with a primary Mnd mod
@@ -177,17 +183,14 @@ end
 
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
-    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Refresh', 'Learning', 'Leveling')
+    state.OffenseMode:options('Normal', 'Acc', 'Subtle', 'Refresh', 'Learning')
     state.WeaponskillMode:options('Normal', 'Acc')
     state.CastingMode:options('Normal', 'Resistant')
-    state.IdleMode:options('Normal', 'PDT', 'Learning', 'Leveling')
-
-    gear.macc_hagondes = {}
+    state.IdleMode:options('Normal', 'PDT', 'Learning')
 
     -- Additional local binds
-    send_command('bind ^` input /ja "Chain Affinity" <me>')
-    send_command('bind !` input /ja "Efflux" <me>')
-    send_command('bind @` input /ja "Burst Affinity" <me>')
+	send_command('bind ^= gs c cycle treasuremode')
+	send_command('bind != gs c toggle CapacityMode')
 
     update_combat_form()
 	lockstyleset()
@@ -197,18 +200,22 @@ end
 
 -- Called when this job file is unloaded (eg: job change)
 function user_unload()
-    send_command('unbind ^`')
-    send_command('unbind !`')
-    send_command('unbind @`')
+    send_command('unbind ^=')
+    send_command('unbind !=')
+    
 end
 
 
 -- Set up gear sets.
 function init_gear_sets()
-    --------------------------------------
+	--------------------------------------
     -- Start defining the sets
     --------------------------------------
 
+	sets.CapacityMantle = {back=gear.CPCape}
+	sets.TreasureHunter = {head="Wh. Rarab Cap +1", legs=gear.HercLTH}
+	sets.Kiting	 = {legs="Carmine Cuisses +1",}
+	
     --sets.buff['Burst Affinity'] = {}
     --sets.buff['Chain Affinity'] = {}
     --sets.buff.Convergence = {}
@@ -231,7 +238,15 @@ function init_gear_sets()
 
     -- Fast cast sets for spells
     
-    --sets.precast.FC = {}
+    sets.precast.FC = {
+	ammo="Impatiens",
+    head="Herculean Helm",
+    body="Hashishin Mintan",
+    hands="Jhakri Cuffs +1",
+    legs={ name="Lengo Pants", augments={'INT+7','Mag. Acc.+7','"Mag.Atk.Bns."+3','"Refresh"+1',}},
+    feet="Jhakri Pigaches +1",
+    left_ring="Jhakri Ring",
+	}
 
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
@@ -247,15 +262,22 @@ function init_gear_sets()
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Ayanmo Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
     
     sets.precast.WS.acc = set_combine(sets.precast.WS, {})
 
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
     sets.precast.WS['Requiescat'] = set_combine(sets.precast.WS, {
+	head="Jhakri Coronal +1",
+    body="Jhakri Robe +2",
+    hands=gear.HercMB,
+    legs="Jhakri Slops +1",
+    feet="Jhakri Pigaches +1",
 	neck="Soil Gorget",
 	waist="Soil Belt",
+	left_ear="Novio Earring",
+    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
 	})
 
     sets.precast.WS['Sanguine Blade'] = {
@@ -267,11 +289,11 @@ function init_gear_sets()
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
-    left_ear="Hecate's Earring",
+    left_ear="Novio Earring",
     right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 	
 	sets.precast.WS['Savage Blade'] = {
@@ -287,7 +309,7 @@ function init_gear_sets()
     waist="Thunder Belt",
     left_ring="Rajas Ring",
     right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 	
 	sets.precast.WS['Chant du Cygne'] = {
@@ -303,28 +325,12 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Rajas Ring",
     right_ring="Enlivened Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
-	}
-
-    sets.precast.WS['Swift Blade'] = {
-	ammo="Ginsen",
-    head="Jhakri Coronal +1",
-    body="Jhakri Robe +2",
-    hands="Jhakri Cuffs +1",
-    legs="Jhakri Slops +1",
-    feet="Jhakri Pigaches +1",
-	left_ear="Steelflash Earring",
-    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
-	neck="Soil Gorget",
-	waist="Soil Belt",
-	left_ring="Rajas Ring",
-    right_ring="Jhakri Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     -- Midcast Sets
     sets.midcast.FastRecast = {}
-        
+	
     sets.midcast['Blue Magic'] = {}
     
     -- Physical Spells --
@@ -342,7 +348,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     sets.midcast['Blue Magic'].PhysicalAcc = {
@@ -358,7 +364,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},	
+    back=gear.BluCTP,	
 	}
 
     sets.midcast['Blue Magic'].PhysicalStr = set_combine(sets.midcast['Blue Magic'].Physical, {})
@@ -384,16 +390,15 @@ function init_gear_sets()
     ammo="Mavi Tathlum",
     head="Jhakri Coronal +1",
     body="Jhakri Robe +2",
-    hands=gear.HercMB,
+    hands={ name="Herculean Gloves", augments={'VIT+15','"Mag.Atk.Bns."+24','Accuracy+6 Attack+6','Mag. Acc.+17 "Mag.Atk.Bns."+17',}},
     legs="Jhakri Slops +1",
     feet="Jhakri Pigaches +1",
     neck="Sanctity Necklace",
     waist="Dynamic Belt",
     left_ear="Hecate's Earring",
-    right_ear={ name="Moonshade Earring", augments={'"Mag.Atk.Bns."+4','TP Bonus +250',}},
+    right_ear="Novio Earring",
     left_ring="Jhakri Ring",
     right_ring="Ayanmo Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
 	}
 
     sets.midcast['Blue Magic'].Magical.Resistant = set_combine(sets.midcast['Blue Magic'].Magical, {})
@@ -458,7 +463,7 @@ function init_gear_sets()
 
 	sets.Subtle = {
     neck="Bathy Choker",
-	head={ name="Lilitu Headpiece", augments={'STR+6','DEX+7','Attack+12',}},
+	head={ name="Dampening Tam", augments={'DEX+6','Mag. Acc.+13',}},
     right_ear="Ouesk Pearl",
 	left_ring="Beeline Ring",
     right_ring="Rajas Ring",
@@ -466,6 +471,7 @@ function init_gear_sets()
 
     sets.latent_refresh = {
 	body="Jhakri Robe +2",
+	legs={ name="Lengo Pants", augments={'INT+7','Mag. Acc.+7','"Mag.Atk.Bns."+3','"Refresh"+1',}},
 	}
 
     -- Resting sets
@@ -483,9 +489,9 @@ function init_gear_sets()
     waist="Windbuffet belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     sets.idle.PDT = {
@@ -499,9 +505,9 @@ function init_gear_sets()
     waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     sets.idle.Town = set_combine(sets.idle, {body="Councilor's Garb",})
@@ -522,9 +528,9 @@ function init_gear_sets()
     waist="Dynamic Belt",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
-    left_ring="Ayanmo Ring",
+    left_ring="Defending Ring",
     right_ring="Vocane Ring",
-    back="Solemnity Cape",
+    back=gear.BluCTP,
 	}
 
     sets.defense.MDT = set_combine(sets.defense.PDT, {})
@@ -545,16 +551,16 @@ function init_gear_sets()
     ammo="Ginsen",
     head="Aya. Zucchetto +1",
     body="Ayanmo Corazza +2",
-    hands=gear.HercMB,
-    legs={ name="Samnuha Tights", augments={'STR+5','DEX+5','"Triple Atk."+1',}},
-    feet="Battlecast Gaiters",
+    hands=gear.HercGMB,
+    legs=gear.SamTTP,
+    feet=gear.HercBTP,
     neck="Clotharius Torque",
     waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
     left_ring="K'ayres Ring",
     right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     sets.engaged.Acc = {
@@ -570,7 +576,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Beeline Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
 	sets.engaged.Subtle = set_combine(sets.engaged, sets.Subtle)
@@ -585,16 +591,16 @@ function init_gear_sets()
     ammo="Ginsen",
     head="Aya. Zucchetto +1",
     body="Ayanmo Corazza +2",
-    hands=gear.HercMB,
-    legs={ name="Samnuha Tights", augments={'STR+5','DEX+5','"Triple Atk."+1',}},
-    feet="Battlecast Gaiters",
+    hands=gear.HercGMB,
+    legs=gear.SamTTP,
+    feet=gear.HercBTP,
     neck="Clotharius Torque",
     waist="Windbuffet Belt +1",
     left_ear="Steelflash Earring",
     right_ear="Bladeborn Earring",
     left_ring="K'ayres Ring",
     right_ring="Rajas Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 
     sets.engaged.DW.Acc = {
@@ -610,7 +616,7 @@ function init_gear_sets()
     right_ear="Bladeborn Earring",
     left_ring="Ayanmo Ring",
     right_ring="Beeline Ring",
-    back={ name="Rosmerta's Cape", augments={'DEX+20','Accuracy+20 Attack+20','DEX+10','Weapon skill damage +10%','Pet: Damage taken -2%',}},
+    back=gear.BluCTP,
 	}
 	
 	sets.engaged.DW.Subtle = set_combine(sets.engaged.DW, sets.Subtle)
@@ -717,6 +723,16 @@ function update_combat_form()
     end
 end
 
+-- Enables Capacity Mode
+function customize_melee_set(meleeSet)
+	--[[if state.TreasureMode.value == 'Fulltime' then
+		meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+	end]]
+    if state.CapacityMode.value then
+        meleeSet = set_combine(meleeSet, sets.CapacityMantle)
+    end
+	return meleeSet
+end
 
 	-- Select default macro book on initial load or subjob change.
 --[[function select_default_macro_book()
