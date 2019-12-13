@@ -28,12 +28,10 @@ gear.RdmCTP = {name="Sucellos's Cape", augments={'DEX+13','Accuracy+20 Attack+20
 -- Override sets
 sets.reive = {neck="Ygnas's Resolve +1"}
 
---[[function global_setup()
+-- Global States
+state.CapacityMode = M(false, 'Capacity Point Mantle')
 
-	state.CapacityMode = M(false, 'Capacity Point Mantle')
-
-end]]
-
+-- Global binds
 function global_on_load()
 	
 	send_command('bind != gs c toggle CapacityMode')
